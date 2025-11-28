@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ananda Valmiki — Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg-a:#031022; --bg-b:#071a2b;
+  --muted:#9aa4b2;
+  --accent1:#7dd3fc; --accent2:#60a5fa;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Arial;
+  background:linear-gradient(180deg,var(--bg-a),var(--bg-b));
+  color:#eaf2ff;
+  overflow:hidden;
+}
+
+/* animated color haze */
+.bg-haze{
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(circle at 20% -10%, rgba(96,165,250,0.18), transparent 60%),
+             radial-gradient(circle at 80% 120%, rgba(60,225,180,0.12), transparent 60%);
+  animation:hazeMove 18s ease-in-out infinite;
+}
+@keyframes hazeMove{
+  0%{filter:blur(40px)}
+  50%{filter:blur(60px) hue-rotate(30deg)}
+  100%{filter:blur(40px)}
+}
+
+/* twinkle particles */
+#particles{
+  position:fixed;inset:0;pointer-events:none;z-index:2;
+}
+
+.stage{
+  position:relative;
+  z-index:5;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:28px;
+}
+
+.card{
+  width:900px;max-width:94vw;
+  background:rgba(255,255,255,0.03);
+  border-radius:18px;
+  padding:26px;
+  border:1px solid rgba(255,255,255,0.05);
+  box-shadow:0 30px 90px rgba(2,6,23,0.5);
+  backdrop-filter:blur(8px);
+  animation:fadeUp .8s ease forwards;
+  opacity:0;transform:translateY(18px);
+}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+
+h1{margin:0;font-size:30px;font-weight:800}
+.subtitle{color:var(--muted);margin:10px 0}
+.mail{color:#92e5ff;text-decoration:none;font-weight:700}
+
+.btn{
+  display:inline-block;
+  padding:10px 16px;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#04202c;
+  font-weight:700;
+  text-decoration:none;
+  margin-top:8px;
+  box-shadow:0 10px 34px rgba(96,165,250,0.12);
+}
+.btn.ghost{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted);
+}
+
+/* layered cards */
+.panels{
+  margin-top:26px;
+  position:relative;
+  height:320px;
+}
+.layer{
+  position:absolute;
+  left:0;right:0;
+  padding:20px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.05);
+  box-shadow:0 16px 40px rgba(2,6,23,0.45);
+  cursor:pointer;
+  transition:.5s;
+}
+.layer.base{transform:translateY(105px) rotate(-3deg);z-index:4}
+.layer.mid{transform:translateY(50px) rotate(-1deg);left:6%;right:6%;z-index:6}
+.layer.top{transform:translateY(0px) rotate(0);left:12%;right:12%;z-index:8}
+
+.panels.expanded .base{transform:translateY(24px) rotate(-5deg)}
+.panels.expanded .mid{transform:translateY(-18px) rotate(-2deg)}
+.panels.expanded .top{transform:translateY(-72px) rotate(1deg)}
+
+.edu-table{width:100%;border-collapse:collapse;margin-top:12px}
+.edu-table th,.edu-table td{
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  padding:8px;
+}
+
+.skill{margin-bottom:10px}
+.progress{
+  height:12px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;
+}
+.fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  transition:width .8s;
+}
+.fill.python{
+  background:linear-gradient(90deg,#bdbfc3,#8e9096);
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-haze"></div>
+<canvas id="particles"></canvas>
+
+<div class="stage">
+  <section class="card">
+    
+    <h1>Ananda Valmiki</h1>
+    <div class="subtitle">Full Name: <strong>Ananda Valmiki Govindapanara</strong></div>
+
+    <p class="subtitle" id="typewriter">Computer Science • Editing • Web</p>
+
+    <a class="btn" href="https://www.canva.com/design/DAG56sOf_cU/2U2exvWLa1niSOWjQvRu_g/view" target="_blank">Download Resume</a>
+    <br>
+    <a class="btn ghost" href="mailto:anandaananda16919@gmail.com">Contact</a>
+
+    <div style="margin-top:10px;color:var(--muted)">
+      Email: <a class="mail" href="mailto:anandaananda16919@gmail.com">anandaananda16919@gmail.com</a>
+    </div>
+
+    <div class="panels" id="panels">
+
+      <!-- Resume Layer -->
+      <div class="layer base">
+        <h3>Resume</h3>
+        <p class="subtitle">Instant resume access — Canva link.</p>
+        <a class="btn ghost" href="https://www.canva.com/design/DAG56sOf_cU/2U2exvWLa1niSOWjQvRu_g/view" target="_blank">Open Resume (Canva)</a>
+      </div>
+
+      <!-- Skills -->
+      <div class="layer mid">
+        <h3>Skills</h3>
+        <p class="subtitle">Soft animated bars (no percentage numbers).</p>
+
+        <div class="skill">
+          <div>HTML</div>
+          <div class="progress"><div class="fill" data-w="90%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div>Editing</div>
+          <div class="progress"><div class="fill" data-w="85%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div>Python</div>
+          <div class="progress"><div class="fill python" data-w="45%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div>JavaScript</div>
+          <div class="progress"><div class="fill" data-w="60%"></div></div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="layer top">
+        <h3>Education</h3>
+        <p class="subtitle">Basic academic details</p>
+
+        <table class="edu-table">
+          <thead>
+            <tr><th>Qualification</th><th>Institution</th><th>Percentage</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>SSLC</td><td>Morarji Desai School</td><td>83.36%</td></tr>
+            <tr><td>PUC</td><td>SBB College, Harapanahalli</td><td>85.50%</td></tr>
+            <tr><td>B.E. (CSE)</td><td>MCE, Hassan</td><td>5th Semester (Pursuing)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </section>
+</div>
+
+<script>
+/* particles */
+(function(){
+  const c = document.getElementById("particles");
+  const x = c.getContext("2d");
+  let w=c.width=innerWidth,h=c.height=innerHeight;
+  let p=[];
+  function make(){
+    p=[];
+    for(let i=0;i<60;i++){
+      p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+0.3,a:Math.random()*0.5+0.2});
+    }
+  }
+  function draw(){
+    x.clearRect(0,0,w,h);
+    p.forEach(s=>{
+      s.a += (Math.random()*0.02 - 0.01);
+      if(s.a<0.05)s.a=0.05;
+      if(s.a>0.8)s.a=0.8;
+      x.beginPath();
+      x.fillStyle=`rgba(180,220,255,${s.a})`;
+      x.arc(s.x,s.y,s.r,0,7);
+      x.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  addEventListener('resize',()=>{w=c.width=innerWidth;h=c.height=innerHeight;make();});
+  make();draw();
+})();
+
+/* typewriter */
+(function(){
+  const el=document.getElementById("typewriter");
+  const words=[
+    "Computer Science Student",
+    "Editing • Content",
+    "Python • HTML • JavaScript",
+    "Building Modern Web Pages"
+  ];
+  let i=0,pos=0,dir=1;
+  function tick(){
+    el.textContent = words[i].slice(0,pos);
+    pos+=dir;
+    if(pos > words[i].length){dir=-1;setTimeout(tick,700);return;}
+    if(pos < 0){dir=1;i=(i+1)%words.length;setTimeout(tick,300);return;}
+    setTimeout(tick,dir===1?45:25);
+  }
+  tick();
+})();
+
+/* expand layers */
+const panels=document.getElementById("panels");
+const fills=document.querySelectorAll(".fill");
+panels.onclick=()=>{
+  panels.classList.toggle("expanded");
+  if(panels.classList.contains("expanded")){
+    fills.forEach(f=>{
+      setTimeout(()=>f.style.width=f.dataset.w,200);
+    });
+  } else {
+    fills.forEach(f=>f.style.width="0");
+  }
+};
+</script>
+
+</body>
+</html>

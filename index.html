@@ -1,277 +1,297 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Ananda Valmiki — Portfolio</title>
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ananda Valmiki — Portfolio (Clean Animated)</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
 <style>
 :root{
-  --bg-a:#031022; --bg-b:#071a2b;
-  --muted:#9aa4b2;
-  --accent1:#7dd3fc; --accent2:#60a5fa;
+  --bg-a:#031022; --bg-b:#071425;
+  --muted:#99a8b9;
+  --accent1:#7dd3fc; --accent2:#60a5fa; --accent3:#60f0c8;
+  --card-radius:16px;
 }
 *{box-sizing:border-box}
+html,body{height:100%;margin:0}
 body{
-  margin:0;
-  font-family:Inter,system-ui,Arial;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
   background:linear-gradient(180deg,var(--bg-a),var(--bg-b));
-  color:#eaf2ff;
+  color:#eaf2ff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+
+/* animated subtle gradient overlay */
+.bg-shift{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(120deg, rgba(96,165,250,0.06), rgba(125,211,252,0.03), rgba(96,225,180,0.02));
+  filter:blur(30px);mix-blend-mode:screen;animation:shiftHue 36s linear infinite}
+@keyframes shiftHue{0%{filter:blur(30px) hue-rotate(0deg)}50%{filter:blur(36px) hue-rotate(24deg)}100%{filter:blur(30px) hue-rotate(-12deg)}}
+
+/* canvas sparks */
+#sparkCanvas{position:fixed;left:0;top:0;width:100%;height:100%;z-index:1;pointer-events:none}
+
+/* center container */
+.container{position:relative;z-index:5;max-width:980px;margin:48px auto;padding:28px}
+
+/* master card */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.008));
+  border-radius:var(--card-radius);padding:28px;border:1px solid rgba(255,255,255,0.04);
+  box-shadow:0 30px 80px rgba(2,6,23,0.6);backdrop-filter:blur(8px);
   overflow:hidden;
 }
 
-/* animated color haze */
-.bg-haze{
-  position:fixed;inset:0;pointer-events:none;z-index:1;
-  background:radial-gradient(circle at 20% -10%, rgba(96,165,250,0.18), transparent 60%),
-             radial-gradient(circle at 80% 120%, rgba(60,225,180,0.12), transparent 60%);
-  animation:hazeMove 18s ease-in-out infinite;
-}
-@keyframes hazeMove{
-  0%{filter:blur(40px)}
-  50%{filter:blur(60px) hue-rotate(30deg)}
-  100%{filter:blur(40px)}
-}
-
-/* twinkle particles */
-#particles{
-  position:fixed;inset:0;pointer-events:none;z-index:2;
-}
-
-.stage{
-  position:relative;
-  z-index:5;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:28px;
-}
-
-.card{
-  width:900px;max-width:94vw;
-  background:rgba(255,255,255,0.03);
-  border-radius:18px;
-  padding:26px;
-  border:1px solid rgba(255,255,255,0.05);
-  box-shadow:0 30px 90px rgba(2,6,23,0.5);
-  backdrop-filter:blur(8px);
-  animation:fadeUp .8s ease forwards;
-  opacity:0;transform:translateY(18px);
-}
-@keyframes fadeUp{to{opacity:1;transform:none}}
-
-h1{margin:0;font-size:30px;font-weight:800}
-.subtitle{color:var(--muted);margin:10px 0}
-.mail{color:#92e5ff;text-decoration:none;font-weight:700}
-
+/* hero */
+.hero{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.title{font-size:34px;font-weight:800;margin:0;letter-spacing:-0.3px}
+.subtitle{margin:0;color:var(--muted);font-size:15px}
+.cta-row{display:flex;gap:12px;align-items:center;margin-top:12px}
 .btn{
-  display:inline-block;
-  padding:10px 16px;
-  border-radius:10px;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  color:#04202c;
-  font-weight:700;
-  text-decoration:none;
-  margin-top:8px;
-  box-shadow:0 10px 34px rgba(96,165,250,0.12);
+  padding:12px 16px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#04202c;font-weight:700;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+  box-shadow:0 12px 34px rgba(96,165,250,0.06);
 }
-.btn.ghost{
-  background:transparent;
-  border:1px solid rgba(255,255,255,0.08);
-  color:var(--muted);
-}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
 
-/* layered cards */
-.panels{
-  margin-top:26px;
-  position:relative;
-  height:320px;
-}
-.layer{
-  position:absolute;
-  left:0;right:0;
-  padding:20px;
-  border-radius:14px;
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.05);
-  box-shadow:0 16px 40px rgba(2,6,23,0.45);
-  cursor:pointer;
-  transition:.5s;
-}
-.layer.base{transform:translateY(105px) rotate(-3deg);z-index:4}
-.layer.mid{transform:translateY(50px) rotate(-1deg);left:6%;right:6%;z-index:6}
-.layer.top{transform:translateY(0px) rotate(0);left:12%;right:12%;z-index:8}
+/* info grid (education + skills + projects) */
+.grid{display:grid;grid-template-columns:1fr 380px;gap:20px;margin-top:20px}
+.left{padding-right:6px}
+.right{padding-left:6px}
 
-.panels.expanded .base{transform:translateY(24px) rotate(-5deg)}
-.panels.expanded .mid{transform:translateY(-18px) rotate(-2deg)}
-.panels.expanded .top{transform:translateY(-72px) rotate(1deg)}
+/* education table */
+.edu-box{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.edu-table{width:100%;border-collapse:collapse}
+.edu-table th,.edu-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);color:#dbeaff;text-align:left;font-size:14px}
+.edu-table thead th{color:var(--muted);font-weight:600}
 
-.edu-table{width:100%;border-collapse:collapse;margin-top:12px}
-.edu-table th,.edu-table td{
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  padding:8px;
-}
+/* skills */
+.skills-box{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+.skill{margin-bottom:12px}
+.skill-title{font-weight:700;margin-bottom:8px}
+.progress{height:12px;background:rgba(255,255,255,0.02);border-radius:999px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent3),var(--accent1),var(--accent2));transition:width .85s cubic-bezier(.2,.9,.2,1)}
 
-.skill{margin-bottom:10px}
-.progress{
-  height:12px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;
-}
-.fill{
-  height:100%;width:0;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  transition:width .8s;
-}
-.fill.python{
-  background:linear-gradient(90deg,#bdbfc3,#8e9096);
+/* projects / about */
+.card-section{margin-top:18px}
+.about{color:var(--muted);line-height:1.5}
+
+/* footer */
+.footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+
+/* small responsive */
+@media(max-width:920px){
+  .grid{grid-template-columns:1fr;gap:14px}
+  .right{order:2}
+  .left{order:1}
+  .container{padding:18px;margin:18px auto}
 }
 </style>
 </head>
-
 <body>
+<div class="bg-shift" aria-hidden="true"></div>
+<canvas id="sparkCanvas" aria-hidden="true"></canvas>
 
-<div class="bg-haze"></div>
-<canvas id="particles"></canvas>
+<div class="container">
+  <div class="card" role="main">
+    <header class="hero" role="banner">
+      <h1 class="title">Ananda Valmiki Govindapanara</h1>
+      <p class="subtitle">B.E. Computer Science (5th Sem) — Malnad Engineering College, Hassan</p>
 
-<div class="stage">
-  <section class="card">
-    
-    <h1>Ananda Valmiki</h1>
-    <div class="subtitle">Full Name: <strong>Ananda Valmiki Govindapanara</strong></div>
+      <div class="cta-row">
+        <a class="btn" id="downloadBtn" href="https://www.canva.com/design/DAG56sOf_cU/2U2exvWLa1niSOWjQvRu_g/view" target="_blank" rel="noopener">Download Resume</a>
+        <a class="btn ghost" href="mailto:anandaananda16919@gmail.com">Email</a>
+      </div>
+    </header>
 
-    <p class="subtitle" id="typewriter">Computer Science • Editing • Web</p>
+    <div class="grid" role="region" aria-label="Main content">
+      <div class="left">
+        <section class="edu-box" aria-labelledby="eduTitle">
+          <h3 id="eduTitle" style="margin:0 0 10px 0">Education</h3>
+          <table class="edu-table" aria-label="education table">
+            <thead><tr><th>Qualification</th><th>Institution</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td>SSLC</td><td>Morarji Desai School</td><td>83.36%</td></tr>
+              <tr><td>PUC</td><td>SBB College, Harapanahalli</td><td>85.50%</td></tr>
+              <tr><td>B.E. (CSE)</td><td>Malnad Engineering College, Hassan</td><td>5th Semester (Pursuing)</td></tr>
+            </tbody>
+          </table>
+        </section>
 
-    <a class="btn" href="https://www.canva.com/design/DAG56sOf_cU/2U2exvWLa1niSOWjQvRu_g/view" target="_blank">Download Resume</a>
-    <br>
-    <a class="btn ghost" href="mailto:anandaananda16919@gmail.com">Contact</a>
+        <section class="card-section" aria-labelledby="projects">
+          <h3 id="projects" style="margin:12px 0 8px 0">Projects</h3>
+          <div class="about">Personal portfolio for Web Programming Laboratory (22CS505). Implements HTML/CSS/JS and a downloadable resume link. Add your projects here later (project descriptions, links and images).</div>
+        </section>
+      </div>
 
-    <div style="margin-top:10px;color:var(--muted)">
-      Email: <a class="mail" href="mailto:anandaananda16919@gmail.com">anandaananda16919@gmail.com</a>
+      <aside class="right">
+        <section class="skills-box" aria-labelledby="skillsTitle">
+          <h3 id="skillsTitle" style="margin:0 0 10px 0">Skills</h3>
+
+          <div class="skill">
+            <div class="skill-title">HTML</div>
+            <div class="progress" aria-hidden="true"><div class="fill" data-w="95%"></div></div>
+          </div>
+
+          <div class="skill">
+            <div class="skill-title">Editing</div>
+            <div class="progress" aria-hidden="true"><div class="fill" data-w="88%"></div></div>
+          </div>
+
+          <div class="skill">
+            <div class="skill-title">Python</div>
+            <div class="progress" aria-hidden="true"><div class="fill" data-w="65%" style="background:linear-gradient(90deg,#d0cdb8,#a8a6a1)"></div></div>
+          </div>
+
+          <div class="skill">
+            <div class="skill-title">JavaScript</div>
+            <div class="progress" aria-hidden="true"><div class="fill" data-w="60%"></div></div>
+          </div>
+        </section>
+
+        <section class="card-section" style="margin-top:12px" aria-labelledby="contactTitle">
+          <h4 id="contactTitle" style="margin:0 0 8px 0">Contact</h4>
+          <div class="about">Email: <a class="mail" href="mailto:anandaananda16919@gmail.com" style="color:#9fe8ff">anandaananda16919@gmail.com</a></div>
+        </section>
+      </aside>
     </div>
 
-    <div class="panels" id="panels">
-
-      <!-- Resume Layer -->
-      <div class="layer base">
-        <h3>Resume</h3>
-        <p class="subtitle">Instant resume access — Canva link.</p>
-        <a class="btn ghost" href="https://www.canva.com/design/DAG56sOf_cU/2U2exvWLa1niSOWjQvRu_g/view" target="_blank">Open Resume (Canva)</a>
-      </div>
-
-      <!-- Skills -->
-      <div class="layer mid">
-        <h3>Skills</h3>
-        <p class="subtitle">Soft animated bars (no percentage numbers).</p>
-
-        <div class="skill">
-          <div>HTML</div>
-          <div class="progress"><div class="fill" data-w="90%"></div></div>
-        </div>
-
-        <div class="skill">
-          <div>Editing</div>
-          <div class="progress"><div class="fill" data-w="85%"></div></div>
-        </div>
-
-        <div class="skill">
-          <div>Python</div>
-          <div class="progress"><div class="fill python" data-w="45%"></div></div>
-        </div>
-
-        <div class="skill">
-          <div>JavaScript</div>
-          <div class="progress"><div class="fill" data-w="60%"></div></div>
-        </div>
-      </div>
-
-      <!-- Education -->
-      <div class="layer top">
-        <h3>Education</h3>
-        <p class="subtitle">Basic academic details</p>
-
-        <table class="edu-table">
-          <thead>
-            <tr><th>Qualification</th><th>Institution</th><th>Percentage</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>SSLC</td><td>Morarji Desai School</td><td>83.36%</td></tr>
-            <tr><td>PUC</td><td>SBB College, Harapanahalli</td><td>85.50%</td></tr>
-            <tr><td>B.E. (CSE)</td><td>MCE, Hassan</td><td>5th Semester (Pursuing)</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-  </section>
+    <div class="footer">© Ananda Valmiki Govindapanara — Malnad Engineering College, Hassan</div>
+  </div>
 </div>
 
 <script>
-/* particles */
+/* animate skill bars when visible */
 (function(){
-  const c = document.getElementById("particles");
-  const x = c.getContext("2d");
-  let w=c.width=innerWidth,h=c.height=innerHeight;
-  let p=[];
-  function make(){
-    p=[];
-    for(let i=0;i<60;i++){
-      p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+0.3,a:Math.random()*0.5+0.2});
+  const fills = document.querySelectorAll('.fill');
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        const el = en.target;
+        const w = el.dataset.w || '60%';
+        el.style.width = w;
+      }
+    });
+  }, {threshold:0.3});
+  fills.forEach(f=>obs.observe(f));
+})();
+
+/* typewriter in subtitle (small) */
+(function(){
+  const el = document.querySelector('.subtitle');
+  const full = el.textContent;
+  let pos = 0;
+  el.textContent = '';
+  (function tick(){
+    pos++;
+    el.textContent = full.slice(0,pos);
+    if(pos < full.length) setTimeout(tick, 28);
+  })();
+})();
+
+/* SPARKS CANVAS: soft moving sparks + streaks (lighter) */
+(function(){
+  const canvas = document.getElementById('sparkCanvas');
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width = innerWidth;
+  let H = canvas.height = innerHeight;
+  let sparks = [], streaks = [];
+  const pointer = {x:W/2, y:H/2};
+  const MAX_SPARKS = Math.max(60, Math.round(W*H/110000));
+
+  function rand(a,b){return Math.random()*(b-a)+a;}
+  function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  addEventListener('resize', resize);
+
+  function spawnSpark(){
+    const x = rand(0,W), y = rand(H*0.55, H*1.05);
+    sparks.push({x,y,vx:rand(-0.4,0.4), vy:rand(-2.6,-0.4), r:rand(0.6,2.8), t:0, life:rand(900,2600), hue:rand(185,210), a:rand(0.12,0.9)});
+    if(sparks.length > MAX_SPARKS) sparks.shift();
+  }
+  function spawnStreak(){
+    const x = rand(-0.2*W, W*1.2), y = rand(H*0.6, H*1.05);
+    streaks.push({x,y,vx:rand(-1.0,1.0), vy:rand(-3.2,-1.2), len:rand(20,70), life:rand(1000,3000), t:0, hue:rand(180,212), w:rand(0.8,2.8), a:rand(0.06,0.28)});
+    if(streaks.length > Math.round(MAX_SPARKS*0.6)) streaks.shift();
+  }
+
+  // seed
+  for(let i=0;i<Math.round(MAX_SPARKS*0.45);i++) spawnSpark();
+  for(let i=0;i<Math.round(MAX_SPARKS*0.14);i++) spawnStreak();
+
+  addEventListener('mousemove', e => { pointer.x = e.clientX; pointer.y = e.clientY; });
+  addEventListener('touchmove', e => { if(e.touches && e.touches[0]){ pointer.x = e.touches[0].clientX; pointer.y = e.touches[0].clientY; } }, {passive:true});
+
+  let last = performance.now();
+  function frame(now){
+    const dt = Math.min(40, now - last);
+    last = now;
+    ctx.clearRect(0,0,W,H);
+
+    // gentle aurora overlay
+    const grd = ctx.createLinearGradient(0, 0, W, H);
+    grd.addColorStop(0, 'rgba(24,42,60,0.02)');
+    grd.addColorStop(1, 'rgba(6,18,30,0.04)');
+    ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+
+    // draw streaks
+    ctx.globalCompositeOperation = 'lighter';
+    for(let i = streaks.length-1; i>=0; i--){
+      const s = streaks[i];
+      s.t += dt;
+      const r = s.t / s.life;
+      if(r > 1){ streaks.splice(i,1); continue; }
+      s.x += s.vx * (dt*0.12) + (pointer.x - W/2)*0.0007;
+      s.y += s.vy * (dt*0.12) + (pointer.y - H/2)*0.0004;
+
+      const grad = ctx.createLinearGradient(s.x, s.y, s.x - s.vx*s.len, s.y - s.vy*s.len);
+      grad.addColorStop(0, `hsla(${s.hue},80%,70%,${s.a*(1-r)})`);
+      grad.addColorStop(0.6, `hsla(${s.hue},70%,60%,${s.a*(1-r)*0.5})`);
+      grad.addColorStop(1, `hsla(${s.hue},60%,50%,0)`);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = s.w;
+      ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(s.x - s.vx * s.len, s.y - s.vy * s.len); ctx.stroke();
+
+      ctx.beginPath(); ctx.fillStyle = `hsla(${s.hue},90%,80%,${s.a*(1-r)})`; ctx.arc(s.x,s.y, s.w*1.6, 0, Math.PI*2); ctx.fill();
     }
+
+    // draw sparks
+    for(let i = sparks.length-1; i>=0; i--){
+      const p = sparks[i];
+      p.t += dt;
+      const lifeRatio = p.t / p.life;
+      if(lifeRatio > 1){ sparks.splice(i,1); continue; }
+      p.vx += (Math.random()-0.5)*0.03;
+      p.vy -= 0.01 * (dt/16);
+      p.x += p.vx * (dt*0.12) + (pointer.x - W/2) * 0.0006;
+      p.y += p.vy * (dt*0.12) + (pointer.y - H/2) * 0.0003;
+
+      const alpha = p.a * (1 - lifeRatio);
+      const rg = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y, Math.max(6,p.r*6));
+      rg.addColorStop(0, `hsla(${p.hue},90%,75%,${alpha})`);
+      rg.addColorStop(0.25, `hsla(${p.hue},70%,65%,${alpha*0.5})`);
+      rg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(p.x,p.y, Math.max(4,p.r*6), 0, Math.PI*2); ctx.fill();
+
+      ctx.beginPath(); ctx.fillStyle = `hsla(${p.hue},95%,95%,${Math.min(1,alpha*1.3)})`; ctx.arc(p.x,p.y, Math.max(0.6,p.r*0.36), 0, Math.PI*2); ctx.fill();
+    }
+
+    // spawn probabilistically
+    if(Math.random() < 0.78) spawnSpark();
+    if(Math.random() < 0.18) spawnStreak();
+
+    ctx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(frame);
   }
-  function draw(){
-    x.clearRect(0,0,w,h);
-    p.forEach(s=>{
-      s.a += (Math.random()*0.02 - 0.01);
-      if(s.a<0.05)s.a=0.05;
-      if(s.a>0.8)s.a=0.8;
-      x.beginPath();
-      x.fillStyle=`rgba(180,220,255,${s.a})`;
-      x.arc(s.x,s.y,s.r,0,7);
-      x.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  addEventListener('resize',()=>{w=c.width=innerWidth;h=c.height=innerHeight;make();});
-  make();draw();
+  requestAnimationFrame(frame);
 })();
 
-/* typewriter */
-(function(){
-  const el=document.getElementById("typewriter");
-  const words=[
-    "Computer Science Student",
-    "Editing • Content",
-    "Python • HTML • JavaScript",
-    "Building Modern Web Pages"
-  ];
-  let i=0,pos=0,dir=1;
-  function tick(){
-    el.textContent = words[i].slice(0,pos);
-    pos+=dir;
-    if(pos > words[i].length){dir=-1;setTimeout(tick,700);return;}
-    if(pos < 0){dir=1;i=(i+1)%words.length;setTimeout(tick,300);return;}
-    setTimeout(tick,dir===1?45:25);
-  }
-  tick();
-})();
+/* subtle entrance animations (fade-in) */
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelector('.card').style.transform = 'none';
+  document.querySelector('.card').style.opacity = '1';
+});
 
-/* expand layers */
-const panels=document.getElementById("panels");
-const fills=document.querySelectorAll(".fill");
-panels.onclick=()=>{
-  panels.classList.toggle("expanded");
-  if(panels.classList.contains("expanded")){
-    fills.forEach(f=>{
-      setTimeout(()=>f.style.width=f.dataset.w,200);
-    });
-  } else {
-    fills.forEach(f=>f.style.width="0");
-  }
-};
+/* small accessibility: hit Enter on download opens link (already anchor) */
+
 </script>
-
 </body>
 </html>

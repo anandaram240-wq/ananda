@@ -1,270 +1,214 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Jeevan H V — Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense App</title>
+
 <style>
-  :root{
-    --bg1: #071026; --bg2:#061328; --accent:#37a6ff; --glass: rgba(255,255,255,0.04);
-    --radius:12px; --ease: cubic-bezier(.2,.9,.3,1);
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter,system-ui,Arial;color:#eaf4ff;background:linear-gradient(180deg,var(--bg1),var(--bg2));min-height:100vh}
-  .wrap{max-width:1000px;margin:28px auto;padding:20px}
-  header{display:flex;justify-content:space-between;align-items:center;gap:12px}
-  .logo{display:flex;align-items:center;gap:10px}
-  .logo .mark{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#2dd4bf,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:800}
-  nav button{background:transparent;border:1px solid transparent;color:inherit;padding:8px 12px;border-radius:8px;cursor:pointer}
-  nav button:hover{transform:translateY(-2px)}
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: #f0f3ff;
+    }
 
-  main.hero{display:flex;gap:24px;align-items:center;justify-content:space-between;margin-top:18px}
-  .left{flex:1;min-width:260px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:26px;border-radius:var(--radius);position:relative;overflow:hidden}
-  h1{margin:0;font-size:clamp(26px,5vw,44px);line-height:1}
-  .subtitle{color:rgba(230,238,248,0.8);margin-top:8px;font-weight:500}
-  .pills{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-  .pill{background:var(--glass);padding:8px 10px;border-radius:10px;font-weight:700}
-  .cta{display:flex;gap:10px;margin-top:18px}
-  .btn{padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:800}
-  .btn.primary{background:linear-gradient(90deg,var(--accent),#6ee7b7);color:#02203a}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit}
+    /* App Container */
+    .app {
+        max-width: 450px;
+        margin: auto;
+        padding: 20px;
+    }
 
-  .right{width:320px;max-width:40%;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius)}
-  .avatar{width:120px;height:120px;border-radius:14px;background:linear-gradient(135deg,#0f1724,#0b2540);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:28px;margin:0 auto}
-  table{width:100%;border-collapse:collapse;margin-top:12px;background:white;color:#04263b;border-radius:8px;overflow:hidden}
-  th,td{padding:8px;text-align:left;border-bottom:1px solid #eef6ff}
-  footer{margin-top:26px;text-align:center;color:rgba(230,238,248,0.6)}
+    /* Header */
+    .header {
+        text-align: center;
+        padding: 20px;
+        color: white;
+        background: linear-gradient(135deg, #5a60ff, #7a3cff);
+        border-radius: 15px;
+        animation: fadeDown 0.6s ease;
+    }
 
-  /* reveal animation */
-  .reveal{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-  .reveal.show{opacity:1;transform:none}
+    @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-  /* responsive */
-  @media(max-width:880px){ main.hero{flex-direction:column} .right{width:100%;max-width:100%} }
+    /* Input Box */
+    .card {
+        background: white;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin-top: 20px;
+        animation: fadeUp 0.6s ease;
+    }
 
-  /* small decorative sparkle */
-  .left::before{
-    content:"";position:absolute;right:-120px;top:-80px;width:360px;height:360px;border-radius:50%;
-    background:radial-gradient(circle at 30% 30%, rgba(55,166,255,0.12), transparent 30%), radial-gradient(circle at 70% 70%, rgba(110,231,183,0.08), transparent 30%);
-    transform:scale(.9);filter:blur(6px);animation:drift 8s linear infinite;
-  }
-  @keyframes drift{0%{transform:translateY(0) scale(.9)}50%{transform:translateY(12px) scale(1)}100%{transform:translateY(0) scale(.9)}}
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    button {
+        background: #6c63ff;
+        color: white;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background: #584bff;
+        transform: scale(1.03);
+    }
+
+    /* Total Box */
+    .total-box {
+        margin-top: 20px;
+        padding: 15px;
+        background: #6c63ff;
+        color: white;
+        text-align: center;
+        border-radius: 10px;
+        font-size: 20px;
+        animation: zoomIn 0.5s ease;
+    }
+
+    @keyframes zoomIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    /* List */
+    ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 15px;
+    }
+
+    li {
+        background: white;
+        margin: 8px 0;
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+        from { transform: translateX(-25px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    .delete-btn {
+        background: red;
+        color: white;
+        border: none;
+        padding: 7px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 </style>
+
 </head>
 <body>
-  <div class="wrap" role="main">
-    <header>
-      <div class="logo">
-        <div class="mark">JH</div>
-        <div>
-          <div style="font-weight:800">Jeevan H V</div>
-          <div style="font-size:12px;color:rgba(230,238,248,0.7)">BE CSE • Malnad College</div>
-        </div>
-      </div>
-      <nav aria-label="Primary">
-        <button onclick="show('home')">Home</button>
-        <button onclick="show('profile')">Profile</button>
-        <button onclick="show('more')">More</button>
-        <button onclick="downloadResume()">Resume</button>
-      </nav>
-    </header>
 
-    <main id="home" class="hero reveal" aria-label="Hero section">
-      <div class="left">
-        <h1 id="animatedName" aria-live="polite">Jeevan H V</h1>
-        <div class="subtitle">Frontend · React · JS · Python — 3rd semester CSE</div>
+<div class="app">
 
-        <div class="pills" aria-hidden="false">
-          <div class="pill">Hassan, Karnataka</div>
-          <div class="pill">+91 77957 80573</div>
-          <div class="pill"><a href="mailto:hvjeevan77@gmail.com" style="color:inherit;text-decoration:underline">hvjeevan77@gmail.com</a></div>
-        </div>
+    <div class="header">
+        <h1>🏡 Home Expense App</h1>
+        <p>Track your daily expenses easily</p>
+    </div>
 
-        <div class="cta">
-          <button class="btn primary" onclick="show('profile')">View Profile</button>
-          <button class="btn ghost" onclick="downloadResume()">Download Resume</button>
-        </div>
-      </div>
+    <div class="card">
+        <input type="text" id="item" placeholder="Expense name (e.g. Milk)">
+        <input type="number" id="amount" placeholder="Amount (₹)">
+        <input type="date" id="date">
+        
+        <select id="category">
+            <option>Food</option>
+            <option>Electricity</option>
+            <option>Transport</option>
+            <option>Rent</option>
+            <option>Other</option>
+        </select>
 
-      <aside class="right">
-        <div class="avatar">JH</div>
-        <div style="text-align:center;margin-top:10px;font-weight:700">Full-stack learner</div>
+        <button onclick="addExpense()">Add Expense</button>
+    </div>
 
-        <h4 style="margin-top:12px">Education</h4>
-        <table role="table" aria-label="education table">
-          <thead><tr><th>Course</th><th>Institute / Result</th></tr></thead>
-          <tbody>
-            <tr><td>SSLC</td><td>Morarrji Desai School — 84%</td></tr>
-            <tr><td>PUC</td><td>Morarrji Desai PU — 90.5%</td></tr>
-            <tr><td>BE CSE</td><td>Malnad College — 2023–2027</td></tr>
-          </tbody>
-        </table>
-      </aside>
-    </main>
+    <div class="total-box">
+        Total Spent: ₹<span id="total">0</span>
+    </div>
 
-    <section id="profile" style="display:none" class="reveal">
-      <div style="margin-top:18px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)">
-        <h2 style="margin:0 0 8px 0">Skills</h2>
-        <p style="margin:6px 0">Frontend: HTML, CSS, JS, React.js • Backend: Python, Node, Express • DB: SQLite</p>
-        <h3 style="margin-top:12px">Projects</h3>
-        <ul>
-          <li>Portfolio (this page)</li>
-          <li>Mini REST API</li>
-        </ul>
-      </div>
-    </section>
+    <ul id="list"></ul>
 
-    <section id="more" style="display:none" class="reveal">
-      <div style="margin-top:18px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)">
-        <h2>Upload / Preview</h2>
-        <input id="fileInput" type="file" accept=".pdf,image/*" style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);border:none;color:inherit">
-        <div id="fileButtons" style="display:none;margin-top:12px;gap:8px">
-          <button id="viewBtn" class="btn ghost">View File</button>
-          <button id="downloadBtn" class="btn primary">Download File</button>
-        </div>
-        <div id="filePreview" style="margin-top:12px"></div>
-
-        <h3 style="margin-top:16px">Submit your details</h3>
-        <form id="infoForm" style="display:flex;flex-direction:column;gap:10px;margin-top:8px" onsubmit="return validateForm(event)">
-          <input type="text" id="name" placeholder="Enter Name" aria-label="Name">
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <input type="text" id="usn" placeholder="Enter USN (eg: 1AB23CS001)" aria-label="USN" style="flex:1;min-width:200px">
-            <input type="email" id="email" placeholder="Enter Email" aria-label="Email" style="flex:1;min-width:200px">
-          </div>
-          <div style="display:flex;gap:8px">
-            <button type="submit" class="btn primary">Submit</button>
-            <button type="button" class="btn ghost" onclick="resetForm()">Reset</button>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <footer>© <span id="year"></span> Jeevan H V</footer>
-  </div>
+</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // simple router
-  function show(id){
-    ['home','profile','more'].forEach(s => {
-      const el = document.getElementById(s);
-      if(!el) return;
-      if(s === id) {
-        el.style.display = (s === 'home') ? 'flex' : 'block';
-        setTimeout(() => el.classList.add('show'), 60);
-      } else {
-        el.style.display = 'none';
-        el.classList.remove('show');
-      }
+let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+
+function render() {
+    const list = document.getElementById('list');
+    const total = document.getElementById('total');
+    list.innerHTML = "";
+    let sum = 0;
+
+    expenses.forEach((e, i) => {
+        sum += e.amount;
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div>
+                <strong>${e.item}</strong> - ₹${e.amount}<br>
+                <small>${e.date} • ${e.category}</small>
+            </div>
+            <button class="delete-btn" onclick="deleteExpense(${i})">X</button>
+        `;
+        list.appendChild(li);
     });
-  }
-  // default view
-  show('home');
 
-  // typed name reveal (works even if hosted)
-  (function typedName(){
-    const el = document.getElementById('animatedName');
-    const text = el.textContent.trim();
-    el.textContent = '';
-    let i = 0;
-    const loop = () => {
-      if(i <= text.length){ el.textContent = text.slice(0,i); i++; setTimeout(loop, 45); }
-    };
-    loop();
-  })();
+    total.textContent = sum;
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+}
 
-  // file preview & download using object URLs
-  let selectedFileURL = null;
-  const fileInput = document.getElementById('fileInput');
-  const viewBtn = document.getElementById('viewBtn');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const fileButtons = document.getElementById('fileButtons');
-  const filePreview = document.getElementById('filePreview');
+function addExpense() {
+    let item = document.getElementById("item").value;
+    let amount = Number(document.getElementById("amount").value);
+    let date = document.getElementById("date").value;
+    let category = document.getElementById("category").value;
 
-  fileInput.addEventListener('change', (e) => {
-    const f = e.target.files[0];
-    if(!f) return;
-    // revoke previous blob
-    if(selectedFileURL) URL.revokeObjectURL(selectedFileURL);
-    selectedFileURL = URL.createObjectURL(f);
-
-    fileButtons.style.display = 'flex';
-    filePreview.innerHTML = '';
-
-    if(f.type.startsWith('image/')) {
-      const img = document.createElement('img');
-      img.src = selectedFileURL;
-      img.style.maxWidth = '100%';
-      img.style.borderRadius = '8px';
-      filePreview.appendChild(img);
-    } else if(f.type === 'application/pdf'){
-      const iframe = document.createElement('iframe');
-      iframe.src = selectedFileURL;
-      iframe.style.width = '100%';
-      iframe.style.height = '280px';
-      iframe.style.border = 'none';
-      filePreview.appendChild(iframe);
-    } else {
-      filePreview.textContent = f.name + ' — preview not available, use View or Download.';
+    if (!item || !amount || !date) {
+        alert("Please fill all fields");
+        return;
     }
-  });
 
-  viewBtn.addEventListener('click', () => {
-    if(selectedFileURL) window.open(selectedFileURL, '_blank');
-  });
+    expenses.push({ item, amount, date, category });
 
-  downloadBtn.addEventListener('click', () => {
-    if(!selectedFileURL) return;
-    const a = document.createElement('a');
-    a.href = selectedFileURL;
-    const f = fileInput.files[0];
-    a.download = (f && f.name) ? f.name : 'file';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    // do not revoke here, user may still view; revoke when new file selected
-  });
+    render();
 
-  // form validation (uppercases USN)
-  window.validateForm = function(e){
-    if(e) e.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const usn  = document.getElementById('usn').value.trim().toUpperCase();
-    const email= document.getElementById('email').value.trim();
+    document.getElementById("item").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("date").value = "";
+}
 
-    if(!name){ alert('Name required'); return false; }
-    const usnPattern = /^[1-9][A-Z]{2}\d{2}[A-Z]{2}\d{3}$/;
-    if(!usnPattern.test(usn)){ alert('Invalid USN! Example: 1AB23CS001'); return false; }
-    if(!email){ alert('Email required'); return false; }
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailPattern.test(email)){ alert('Invalid email address'); return false; }
+function deleteExpense(i) {
+    expenses.splice(i, 1);
+    render();
+}
 
-    // demo behavior: pretend to submit then clear
-    alert('Form submitted successfully (demo). Check console for values.');
-    console.log({name,usn,email});
-    return false; // return true if you want real submit
-  };
-
-  window.resetForm = function(){
-    document.getElementById('infoForm').reset();
-    if(selectedFileURL){ URL.revokeObjectURL(selectedFileURL); selectedFileURL = null; }
-    document.getElementById('fileButtons').style.display = 'none';
-    document.getElementById('filePreview').innerHTML = '';
-  };
-
-  // resume helper (place resume.pdf in same repo root)
-  window.downloadResume = function(){
-    const a = document.createElement('a');
-    a.href = 'resume.pdf';
-    a.download = 'Jeevan_H_V_Resume.pdf';
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  };
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-});
+render();
 </script>
+
 </body>
 </html>

@@ -1,213 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Expense App</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chandan C V — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background: #f0f3ff;
-    }
+/* ---------- GLOBAL ---------- */
+:root{
+  --ice-1: #e6f9ff;
+  --ice-2: #cfeeff;
+  --ice-3: #b7e6ff;
+  --ice-4: #9fdcff;
+  --ice-5: #7fd2ff;
+  --card-bg: rgba(255,255,255,0.06);
+  --muted: rgba(255,255,255,0.85);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:#081222;
+  color:var(--muted);
+  overflow-x:hidden;
+}
 
-    /* App Container */
-    .app {
-        max-width: 450px;
-        margin: auto;
-        padding: 20px;
-    }
+/* Canvas BG occupies full screen */
+canvas#bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
+}
 
-    /* Header */
-    .header {
-        text-align: center;
-        padding: 20px;
-        color: white;
-        background: linear-gradient(135deg, #5a60ff, #7a3cff);
-        border-radius: 15px;
-        animation: fadeDown 0.6s ease;
-    }
+/* Content wrapper */
+.wrapper{
+  position:relative;
+  z-index:10;
+  max-width:960px;
+  margin:32px auto;
+  padding:28px;
+}
 
-    @keyframes fadeDown {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+/* Card style */
+.card{
+  background:var(--card-bg);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:22px;
+  border-radius:14px;
+  backdrop-filter: blur(6px);
+  margin-bottom:20px;
+  box-shadow:0 18px 50px rgba(0,0,0,0.45);
+}
 
-    /* Input Box */
-    .card {
-        background: white;
-        padding: 18px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        margin-top: 20px;
-        animation: fadeUp 0.6s ease;
-    }
+/* Headings */
+h1{margin:0 0 8px; font-size:28px; letter-spacing:0.2px}
+h2{margin:0 0 10px; font-size:18px}
 
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+/* small */
+p{margin:6px 0; color:var(--muted)}
 
-    input, select, button {
-        width: 100%;
-        padding: 12px;
-        margin-top: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 16px;
-    }
+/* Button (ice blue) */
+.btn{
+  display:inline-block;
+  text-decoration:none;
+  padding:10px 14px;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--ice-4),var(--ice-5));
+  color:#042631;
+  font-weight:700;
+  box-shadow:0 8px 18px rgba(127,210,255,0.12), inset 0 -2px 0 rgba(255,255,255,0.06);
+}
+.btn:hover{filter:brightness(1.05)}
 
-    button {
-        background: #6c63ff;
-        color: white;
-        font-size: 18px;
-        border: none;
-        cursor: pointer;
-        transition: 0.2s;
-    }
+/* link */
+a.link{color:var(--ice-2); text-decoration:none}
 
-    button:hover {
-        background: #584bff;
-        transform: scale(1.03);
-    }
+/* table */
+table{width:100%; border-collapse:collapse; margin-top:10px}
+th,td{padding:10px; border-bottom:1px solid rgba(255,255,255,0.05)}
+th{color:rgba(255,255,255,0.7); font-weight:600}
 
-    /* Total Box */
-    .total-box {
-        margin-top: 20px;
-        padding: 15px;
-        background: #6c63ff;
-        color: white;
-        text-align: center;
-        border-radius: 10px;
-        font-size: 20px;
-        animation: zoomIn 0.5s ease;
-    }
+/* skills */
+.skill-title{font-weight:600; margin-top:10px}
+.skill-bar{height:10px;border-radius:10px;background:rgba(255,255,255,0.06);overflow:hidden;margin-bottom:10px}
+.fill{height:100%; width:0; background:linear-gradient(90deg,var(--ice-3),var(--ice-5)); transition:width 1s;}
 
-    @keyframes zoomIn {
-        from { transform: scale(0.8); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-    }
-
-    /* List */
-    ul {
-        list-style: none;
-        padding: 0;
-        margin-top: 15px;
-    }
-
-    li {
-        background: white;
-        margin: 8px 0;
-        padding: 15px;
-        border-radius: 10px;
-        display: flex;
-        justify-content: space-between;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        animation: slideIn 0.4s ease;
-    }
-
-    @keyframes slideIn {
-        from { transform: translateX(-25px); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-
-    .delete-btn {
-        background: red;
-        color: white;
-        border: none;
-        padding: 7px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+/* small responsive */
+@media (max-width:640px){
+  .wrapper{padding:18px}
+  h1{font-size:22px}
+}
 </style>
-
 </head>
 <body>
 
-<div class="app">
+<canvas id="bg"></canvas>
 
-    <div class="header">
-        <h1>🏡 Home Expense App</h1>
-        <p>Track your daily expenses easily</p>
-    </div>
+<div class="wrapper">
 
-    <div class="card">
-        <input type="text" id="item" placeholder="Expense name (e.g. Milk)">
-        <input type="number" id="amount" placeholder="Amount (₹)">
-        <input type="date" id="date">
-        
-        <select id="category">
-            <option>Food</option>
-            <option>Electricity</option>
-            <option>Transport</option>
-            <option>Rent</option>
-            <option>Other</option>
-        </select>
+  <!-- HEADER -->
+  <div class="card">
+    <h1>Chandan C V</h1>
+    <p>Python • HTML • JavaScript</p>
 
-        <button onclick="addExpense()">Add Expense</button>
-    </div>
+    <p><strong>Email:</strong> <a class="link" href="mailto:chandanshetty246@gmail.com">chandanshetty246@gmail.com</a></p>
+    <p><strong>Phone:</strong> 8884669060</p>
 
-    <div class="total-box">
-        Total Spent: ₹<span id="total">0</span>
-    </div>
+    <a class="btn" href="https://www.canva.com/design/DAG6kHGrzTI/3BHfOqo5dQsYivXN9hdebQ/view?utm_content=DAG6kHGrzTI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hfa977712f7" target="_blank">View Resume</a>
+  </div>
 
-    <ul id="list"></ul>
+  <!-- EDUCATION -->
+  <div class="card">
+    <h2>Education</h2>
+    <table>
+      <thead>
+        <tr><th>Qualification</th><th>Institution</th><th>Percentage / Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>SSLC</td><td>ST MARY’S SCHOOL, Chikkamagaluru</td><td>78%</td></tr>
+        <tr><td>PUC</td><td>ST MARY’S COLLEGE, Chikkamagaluru</td><td>72%</td></tr>
+        <tr><td>B.E (CSE)</td><td>BGS Institute of Technology, BG Nagar</td><td>5th Semester (Pursuing)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="card">
+    <h2>Skills</h2>
+
+    <div class="skill-title">HTML</div>
+    <div class="skill-bar"><div class="fill" data-w="95%"></div></div>
+
+    <div class="skill-title">Editing</div>
+    <div class="skill-bar"><div class="fill" data-w="85%"></div></div>
+
+    <div class="skill-title">Python</div>
+    <div class="skill-bar"><div class="fill" data-w="40%"></div></div>
+
+    <div class="skill-title">JavaScript</div>
+    <div class="skill-bar"><div class="fill" data-w="60%"></div></div>
+  </div>
 
 </div>
 
 <script>
-let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+/* animate fills */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.fill').forEach(el => el.style.width = el.dataset.w);
+});
 
-function render() {
-    const list = document.getElementById('list');
-    const total = document.getElementById('total');
-    list.innerHTML = "";
-    let sum = 0;
+/* CANVAS: Ice-blue aurora + mountains + snow particles */
+const c = document.getElementById('bg');
+const ctx = c.getContext('2d');
 
-    expenses.forEach((e, i) => {
-        sum += e.amount;
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <div>
-                <strong>${e.item}</strong> - ₹${e.amount}<br>
-                <small>${e.date} • ${e.category}</small>
-            </div>
-            <button class="delete-btn" onclick="deleteExpense(${i})">X</button>
-        `;
-        list.appendChild(li);
+function resize(){ c.width = innerWidth; c.height = innerHeight; }
+window.addEventListener('resize', resize);
+resize();
+
+/* Snow particles */
+let snow = [];
+function makeSnow(count=120){
+  snow = [];
+  for(let i=0;i<count;i++){
+    snow.push({
+      x: Math.random()*c.width,
+      y: Math.random()*c.height,
+      r: Math.random()*2.5 + 0.6,
+      vx: (Math.random()-0.5)*0.4,
+      vy: Math.random()*0.6 + 0.2,
+      a: Math.random()*0.6 + 0.3
     });
+  }
+}
+makeSnow(Math.round((c.width*c.height)/80000)); // scale with screen
+window.addEventListener('resize', ()=> makeSnow(Math.round((c.width*c.height)/80000)));
 
-    total.textContent = sum;
-    localStorage.setItem("expenses", JSON.stringify(expenses));
+/* Utility: draw soft circle */
+function softCircle(x,y,r,alpha,color){
+  let g = ctx.createRadialGradient(x,y,0,x,y,r*2);
+  g.addColorStop(0, `rgba(${color.r},${color.g},${color.b},${alpha})`);
+  g.addColorStop(1, `rgba(${color.r},${color.g},${color.b},0)`);
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fill();
 }
 
-function addExpense() {
-    let item = document.getElementById("item").value;
-    let amount = Number(document.getElementById("amount").value);
-    let date = document.getElementById("date").value;
-    let category = document.getElementById("category").value;
+/* Mountain layers: draw polygon with gradient */
+function drawMountains(){
+  // background subtle glow
+  let g = ctx.createLinearGradient(0,0,c.width,c.height);
+  g.addColorStop(0,'rgba(230,249,255,0.06)');
+  g.addColorStop(0.5,'rgba(190,235,255,0.04)');
+  g.addColorStop(1,'rgba(10,30,40,0.12)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,c.width,c.height);
 
-    if (!item || !amount || !date) {
-        alert("Please fill all fields");
-        return;
+  // mountain colors (ice tones)
+  const layers = [
+    {h: 0.72, color1:'#e6f9ff', color2:'#cfeeff', blur:90},
+    {h: 0.82, color1:'#cfeeff', color2:'#b7e6ff', blur:120},
+    {h: 0.92, color1:'#b7e6ff', color2:'#9fdcff', blur:180}
+  ];
+
+  layers.forEach((L, idx)=>{
+    const peakCount = 6 + idx*2;
+    const baseY = c.height * L.h;
+    // create gradient for layer
+    let grad = ctx.createLinearGradient(0, baseY-300, 0, c.height);
+    grad.addColorStop(0, L.color1);
+    grad.addColorStop(1, L.color2);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(-50, c.height);
+    // create peaks
+    for(let i=0;i<=peakCount;i++){
+      const x = (i/peakCount) * (c.width + 100) - 50;
+      // vary peak height
+      const peak = baseY - (Math.sin((i/peakCount)*Math.PI) * (80 + idx*40)) - (Math.random()*30);
+      ctx.lineTo(x, peak);
     }
+    ctx.lineTo(c.width + 50, c.height);
+    ctx.closePath();
 
-    expenses.push({ item, amount, date, category });
+    // soft shadow
+    ctx.fillStyle = grad;
+    ctx.filter = `blur(${L.blur}px)`;
+    ctx.globalAlpha = 0.95 - idx*0.15;
+    ctx.fill();
+    ctx.restore();
 
-    render();
-
-    document.getElementById("item").value = "";
-    document.getElementById("amount").value = "";
-    document.getElementById("date").value = "";
+    // crisp top edge for foreground layers
+    if(idx === 0){
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(-50, c.height);
+      for(let i=0;i<=peakCount;i++){
+        const x = (i/peakCount) * (c.width + 100) - 50;
+        const peak = baseY - (Math.sin((i/peakCount)*Math.PI) * (80 + idx*40)) - (Math.random()*30);
+        ctx.lineTo(x, peak);
+      }
+      ctx.lineTo(c.width + 50, c.height);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255,255,255,0.02)';
+      ctx.globalAlpha = 0.9;
+      ctx.filter = 'none';
+      ctx.fill();
+      ctx.restore();
+    }
+  });
 }
 
-function deleteExpense(i) {
-    expenses.splice(i, 1);
-    render();
+/* draw gentle aurora streaks */
+function drawAurora(t){
+  const stripes = 6;
+  for(let i=0;i<stripes;i++){
+    const pathOffset = Math.sin((t/4000) + i) * 120;
+    const y = c.height*0.2 + (i*40) + pathOffset*0.2;
+    const g = ctx.createLinearGradient(0, y-100, 0, y+200);
+    g.addColorStop(0, `rgba(230,249,255,${0.06 - i*0.005})`);
+    g.addColorStop(1, `rgba(160,230,255,${0.02 - i*0.002})`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(c.width*0.5, y, c.width*0.9, 180 + i*40, 0, 0, Math.PI*2);
+    ctx.fill();
+  }
 }
 
-render();
+/* draw snowflake (simple star) */
+function drawSnow(x,y,r,alpha){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = `rgba(230,245,255,${alpha})`;
+  ctx.lineWidth = Math.max(1, r*0.25);
+  // 6-armed snow
+  for(let i=0;i<6;i++){
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.lineTo(0, -r*2);
+    ctx.stroke();
+    ctx.rotate(Math.PI/3);
+  }
+  ctx.restore();
+}
+
+/* main animate */
+let last = 0;
+function animate(t){
+  // t in ms
+  ctx.clearRect(0,0,c.width,c.height);
+
+  // subtle gradient sky
+  const sky = ctx.createLinearGradient(0,0,0,c.height);
+  sky.addColorStop(0,'#071423');
+  sky.addColorStop(0.25,'#08232b');
+  sky.addColorStop(1,'#071218');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0,0,c.width,c.height);
+
+  // aurora
+  drawAurora(t);
+
+  // mountains
+  drawMountains();
+
+  // soft light spots (ice glow)
+  softCircle(c.width*0.2, c.height*0.22, 260, 0.08, {r:200,g:245,b:255});
+  softCircle(c.width*0.8, c.height*0.18, 200, 0.06, {r:180,g:235,b:255});
+
+  // update and draw snow
+  snow.forEach(s=>{
+    s.x += s.vx;
+    s.y += s.vy;
+    // small sway
+    s.x += Math.sin((t/1000) + s.x*0.001) * 0.2;
+    if(s.y > c.height + 8){ s.y = -10; s.x = Math.random()*c.width; }
+    if(s.x < -20) s.x = c.width + 20;
+    if(s.x > c.width + 20) s.x = -20;
+    drawSnow(s.x, s.y, s.r, s.a);
+  });
+
+  // faint foreground snow sparkle (tiny circles)
+  for(let i=0;i<6;i++){
+    const cx = ( (i*0.17 + Math.sin(t/2000 + i) * 0.02 ) * c.width ) % c.width;
+    const cy = c.height*0.55 + Math.sin(t/1200 + i) * 40;
+    softCircle(cx, cy, 60, 0.02, {r:200,g:245,b:255});
+  }
+
+  last = t;
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+
+/* recreate snow on resize to scale count */
+window.addEventListener('resize', ()=> makeSnow(Math.round((c.width*c.height)/90000)));
 </script>
 
 </body>
